@@ -40,7 +40,7 @@ export default function Login({ url }: LoginProps) {
     >
       <Typography fontWeight={700} fontSize={24}>
         KINFRAMES
-        <Tooltip title="ㅁㅁㅁ">
+        <Tooltip title="Kin (가족) + Frame (사진/영상의 틀)을 의미합니다.">
           <IconButton>
             <HelpOutlinedIcon />
           </IconButton>
