@@ -3,40 +3,51 @@
 import Image from "next/image";
 import Link from "next/link";
 import HelpOutlinedIcon from "@mui/icons-material/HelpOutlined";
-import { Button, IconButton, Stack, Tooltip, Typography } from "@mui/material";
+import {
+  Button,
+  Grid,
+  IconButton,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 
 import theme from "@/shared/mui/theme";
 
-interface LoginProps {
+interface PageContentProps {
   url: string;
 }
 
-export default function Login({ url }: LoginProps) {
+export default function PageContent({ url }: PageContentProps) {
   return (
-    <Stack
+    <Grid
+      size={12}
+      component={Stack}
       sx={{
-        alignItems: "center",
         justifyContent: "center",
-
-        width: "640px",
+        alignItems: "center",
         gap: "40px",
-        py: "64px",
-
-        [theme.breakpoints.down("sm")]: {
-          width: "360px",
+        [theme.breakpoints.down("lg")]: {
           gap: "24px",
-          py: "40px",
         },
       }}
     >
-      <Typography fontWeight={700} fontSize={24}>
-        KINFRAMES
+      <Stack
+        sx={{
+          flexDirection: "row",
+          alignItems: "center",
+          gap: "8px",
+        }}
+      >
+        <Typography fontWeight={700} fontSize={24}>
+          KINFRAMES
+        </Typography>
         <Tooltip title="Kin (가족) + Frame (사진/영상의 틀)을 의미합니다.">
           <IconButton>
             <HelpOutlinedIcon />
           </IconButton>
         </Tooltip>
-      </Typography>
+      </Stack>
       <Typography fontSize={16} textAlign="center">
         구글 계정으로 로그인하거나,
         <br />
@@ -66,6 +77,6 @@ export default function Login({ url }: LoginProps) {
       >
         구글 계정으로 인증
       </Button>
-    </Stack>
+    </Grid>
   );
 }

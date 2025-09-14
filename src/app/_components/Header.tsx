@@ -1,5 +1,6 @@
 "use client";
-import { Stack, Typography } from "@mui/material";
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import { IconButton, Stack } from "@mui/material";
 
 import theme from "@/shared/mui/theme";
 
@@ -9,17 +10,22 @@ export default function Header() {
       sx={{
         mx: "auto",
 
-        [theme.breakpoints.up("lg")]: {
-          maxWidth: "1200px",
-          height: "80px",
-        },
+        maxWidth: "1200px",
+        height: "80px",
+        mb: "40px",
         [theme.breakpoints.down("lg")]: {
           mx: "16px",
           height: "40px",
+          mb: "24px",
         },
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-end",
       }}
     >
-      <Typography color="primary.500">헤더영역123</Typography>
+      <IconButton>
+        <MenuOutlinedIcon />
+      </IconButton>
     </Stack>
   );
 }

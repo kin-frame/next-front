@@ -3,11 +3,7 @@ import { Grid, StackProps } from "@mui/material";
 
 import theme from "@/shared/mui/theme";
 
-interface PageWrapperProps extends StackProps {
-  showGuide?: boolean;
-}
-
-export default function PageWrapper({}: PageWrapperProps) {
+export default function PageWrapper({ children }: StackProps) {
   return (
     <Grid
       container
@@ -33,11 +29,7 @@ export default function PageWrapper({}: PageWrapperProps) {
         },
       }}
     >
-      <Grid size={4} height={100} sx={{ bgcolor: "primary.50" }}></Grid>
-      <Grid size={4} height={100} sx={{ bgcolor: "primary.50" }}></Grid>
-      <Grid size={4} height={100} sx={{ bgcolor: "primary.50" }}></Grid>
-      <Grid size={4} height={100} sx={{ bgcolor: "primary.50" }}></Grid>
-      <Grid size={4} height={100} sx={{ bgcolor: "primary.50" }}></Grid>
+      {children}
     </Grid>
   );
 }

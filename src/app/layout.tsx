@@ -5,6 +5,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 
 import theme from "@/shared/mui/theme";
+import Footer from "./_components/Footer";
 import Header from "./_components/Header";
 
 const pretendardGOV = localFont({
@@ -29,6 +30,7 @@ export default function RootLayout({
           <body className={`${pretendardGOV.className}`}>
             <Header />
             {children}
+            <Footer />
           </body>
         </AppRouterCacheProvider>
       </ThemeProvider>
