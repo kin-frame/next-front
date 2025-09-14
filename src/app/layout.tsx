@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import { Roboto } from "next/font/google";
+import localFont from "next/font/local";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
@@ -8,21 +7,8 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import theme from "@/shared/mui/theme";
 import Header from "./_components/Header";
 
-const roboto = Roboto({
-  weight: ["300", "400", "500", "700"],
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-roboto",
-});
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const pretendardGOV = localFont({
+  src: "./_font/PretendardGOVVariable.ttf",
 });
 
 export const metadata: Metadata = {
@@ -40,9 +26,7 @@ export default function RootLayout({
       <ThemeProvider theme={theme}>
         <AppRouterCacheProvider>
           <CssBaseline />
-          <body
-            className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable}`}
-          >
+          <body className={`${pretendardGOV.className}`}>
             <Header />
             {children}
           </body>

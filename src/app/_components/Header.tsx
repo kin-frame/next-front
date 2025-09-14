@@ -19,7 +19,7 @@ export default function Header() {
         },
       }}
     >
-      <Typography color="primary.500">Header</Typography>
+      <Typography color="primary.500">헤더영역123</Typography>
     </Stack>
   );
 }
