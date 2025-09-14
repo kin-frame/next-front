@@ -2,15 +2,15 @@
   "Next.js Server Page": {
     "prefix": "nxsp",
     "body": [
-      "import { Stack } from \"@mui/material\";",
+      "import PageWrapper from \"@/entities/PageWrapper\";",
       "",
       "export default async function Page() {",
       "  return (",
-      "    <Stack>",
-      "      Page",
-      "    </Stack>",
+      "    <PageWrapper>",
+      "      Server Page",
+      "    </PageWrapper>",
       "  );",
-      "}"
+      "}",
     ],
     "description": "Next.js Server Page 기본 템플릿"
   },

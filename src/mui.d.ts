@@ -19,3 +19,10 @@ declare module "@mui/material/styles" {
     point?: PaletteOptions["primary"];
   }
 }
+
+declare module "@mui/material/Button" {
+  interface ButtonPropsColorOverrides {
+    point: true;
+    danger: true;
+  }
+}

@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import HelpOutlinedIcon from "@mui/icons-material/HelpOutlined";
 import {
   Button,
@@ -59,7 +58,7 @@ export default function PageContent({ url }: PageContentProps) {
       <Button
         variant="outlined"
         color="inherit"
-        LinkComponent={Link}
+        LinkComponent="a"
         href={url}
         startIcon={
           <Image

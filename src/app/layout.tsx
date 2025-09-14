@@ -3,10 +3,13 @@ import localFont from "next/font/local";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 import theme from "@/shared/mui/theme";
 import Footer from "./_components/Footer";
 import Header from "./_components/Header";
+import { getQueryClient } from "./_query/get-query-client";
+import Providers from "./_query/providers";
 
 const pretendardGOV = localFont({
   src: "./_font/PretendardGOVVariable.ttf",
@@ -22,18 +25,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const queryClient = getQueryClient();
+
   return (
     <html lang="en">
-      <ThemeProvider theme={theme}>
-        <AppRouterCacheProvider>
-          <CssBaseline />
-          <body className={`${pretendardGOV.className}`}>
-            <Header />
-            {children}
-            <Footer />
-          </body>
-        </AppRouterCacheProvider>
-      </ThemeProvider>
+      <Providers>
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <ThemeProvider theme={theme}>
+            <AppRouterCacheProvider>
+              <CssBaseline />
+              <body className={`${pretendardGOV.className}`}>
+                <Header />
+                {children}
+                <Footer />
+              </body>
+            </AppRouterCacheProvider>
+          </ThemeProvider>
+        </HydrationBoundary>
+      </Providers>
     </html>
   );
 }

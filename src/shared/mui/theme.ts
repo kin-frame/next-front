@@ -63,7 +63,7 @@ const theme = createTheme({
       800: "#33363d",
       900: "#1e2124",
     },
-    danger: {
+    error: {
       main: "#de3412",
       50: "#fdefec",
       100: "#fcdfd9",
@@ -75,6 +75,7 @@ const theme = createTheme({
       700: "#8a240f",
       800: "#5c180a",
       900: "#390d05",
+      contrastText: "#fff",
     },
     warning: {
       main: "#9e6a00",
@@ -104,6 +105,8 @@ const theme = createTheme({
     },
     point: {
       main: "#d63d4a",
+      light: "#d65c66", // 커스텀색상은 반드시 추가해줘야함
+      dark: "#7a1f26",
       50: "#fbeff0",
       100: "#f5d6d9",
       200: "#ebadb2",
@@ -114,6 +117,16 @@ const theme = createTheme({
       700: "#7a1f26",
       800: "#521419",
       900: "#310c0f",
+      contrastText: "#fff",
+    },
+  },
+  components: {
+    MuiButton: {
+      defaultProps: {
+        variant: "contained",
+        disableElevation: true,
+      },
+      styleOverrides: {},
     },
   },
 });
