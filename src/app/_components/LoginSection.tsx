@@ -3,14 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import HelpOutlinedIcon from "@mui/icons-material/HelpOutlined";
-import {
-  Button,
-  IconButton,
-  Paper,
-  Stack,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Button, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 
 import theme from "@/shared/mui/theme";
 
@@ -20,9 +13,7 @@ interface LoginProps {
 
 export default function Login({ url }: LoginProps) {
   return (
-    <Paper
-      component={Stack}
-      elevation={4}
+    <Stack
       sx={{
         alignItems: "center",
         justifyContent: "center",
@@ -75,6 +66,6 @@ export default function Login({ url }: LoginProps) {
       >
         구글 계정으로 인증
       </Button>
-    </Paper>
+    </Stack>
   );
 }

@@ -1,0 +1,33 @@
+{
+  "Next.js Server Page": {
+    "prefix": "nxsp",
+    "body": [
+      "import { Stack } from \"@mui/material\";",
+      "",
+      "export default async function Page() {",
+      "  return (",
+      "    <Stack>",
+      "      Page",
+      "    </Stack>",
+      "  );",
+      "}"
+    ],
+    "description": "Next.js Server Page 기본 템플릿"
+  },
+  "Next.js Client Component": {
+    "prefix": "nxcc",
+    "body": [
+      "\"use client\";",
+      "import { Stack } from \"@mui/material\";",
+      "",
+      "export default function ${TM_FILENAME_BASE}() {",
+      "  return (",
+      "    <Stack>",
+      "      ${TM_FILENAME_BASE}",
+      "    </Stack>",
+      "  );",
+      "}"
+    ],
+    "description": "Next.js Client Component 기본 템플릿"
+  }
+}

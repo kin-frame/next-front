@@ -6,6 +6,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 
 import theme from "@/shared/mui/theme";
+import Header from "./_components/Header";
 
 const roboto = Roboto({
   weight: ["300", "400", "500", "700"],
@@ -36,16 +37,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable}`}
-      >
-        <ThemeProvider theme={theme}>
-          <AppRouterCacheProvider>
-            <CssBaseline />
+      <ThemeProvider theme={theme}>
+        <AppRouterCacheProvider>
+          <CssBaseline />
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable}`}
+          >
+            <Header />
             {children}
-          </AppRouterCacheProvider>
-        </ThemeProvider>
-      </body>
+          </body>
+        </AppRouterCacheProvider>
+      </ThemeProvider>
     </html>
   );
 }
