@@ -1,5 +1,10 @@
 import PageWrapper from "@/entities/PageWrapper";
+import PageContent from "./_components.tsx/PageContent";
 
 export default async function Page() {
-  return <PageWrapper>회원가입 완료 안내 페이지</PageWrapper>;
+  return (
+    <PageWrapper>
+      <PageContent />
+    </PageWrapper>
+  );
 }

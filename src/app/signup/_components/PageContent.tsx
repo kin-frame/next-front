@@ -3,9 +3,8 @@ import { useForm } from "react-hook-form";
 import { Button, Grid, Stack, TextField, Typography } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 
+import api from "@/shared/api";
 import theme from "@/shared/mui/theme";
-
-import axios from "axios";
 
 export default function PageContent() {
   const { handleSubmit, register } = useForm<{
@@ -22,7 +21,7 @@ export default function PageContent() {
         message: string;
       };
     }) =>
-      axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/signup`, body, {
+      api.post(`${process.env.NEXT_PUBLIC_API_URL}/user/signup`, body, {
         withCredentials: true,
       }),
   });

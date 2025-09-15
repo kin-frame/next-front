@@ -8,18 +8,18 @@ const api = axios.create({
 });
 
 // 요청 인터셉터
-api.interceptors.request.use(
-  (config) => {
-    // 예: 토큰 자동 주입
-    const token =
-      typeof window !== "undefined" ? localStorage.getItem("token") : null;
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+// api.interceptors.request.use(
+//   (config) => {
+//     // 예: 토큰 자동 주입
+//     const token =
+//       typeof window !== "undefined" ? localStorage.getItem("token") : null;
+//     if (token) {
+//       config.headers.Authorization = `Bearer ${token}`;
+//     }
+//     return config;
+//   },
+//   (error) => Promise.reject(error)
+// );
 
 // 응답 인터셉터
 api.interceptors.response.use(
