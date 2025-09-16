@@ -23,17 +23,14 @@ export default function PageContent() {
         name: string;
         message: string;
       };
-    }) => api.post(`${process.env.NEXT_PUBLIC_API_URL}/user/signup`, body),
+    }) => api.post(`/user/signup`, body),
     onSuccess: () => {
       router.push("/signup/info");
     },
   });
 
   const { mutate: signupCheck } = useMutation({
-    mutationFn: () =>
-      api.get<{ status: string }>(
-        `${process.env.NEXT_PUBLIC_API_URL}/user/signup/check`
-      ),
+    mutationFn: () => api.get<{ status: string }>(`/user/signup/check`),
     onSuccess: ({ data }) => {
       // 회원가입 신청 단계가 아니면 info로 이동
       // TODO: 회원가입 거부되었을 때 관련 페이지로 이동해야 함
