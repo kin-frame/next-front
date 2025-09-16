@@ -33,4 +33,17 @@ const api = axios.create({
 //   }
 // );
 
+export interface PagebleReqDto {
+  page: number;
+  size: number;
+  sort: string[];
+}
+
+export interface PagebleResDto<T> {
+  content: T[];
+  page: number;
+  size: number;
+  totalPages: number;
+  totalCount: number;
+}
 export default api;

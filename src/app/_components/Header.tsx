@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import { Button, Drawer, IconButton, Stack, TextField } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 
 import api from "@/shared/api";
@@ -40,6 +40,7 @@ export default function Header() {
 }
 
 function FileUploadButton() {
+  const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
 
   const toggleDrawer =
@@ -116,6 +117,9 @@ function FileUploadButton() {
     onSuccess: () => {
       setOpen(false);
       reset();
+      queryClient.invalidateQueries({
+        queryKey: ["files", "list"],
+      });
     },
   });
 
