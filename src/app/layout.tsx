@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Stack } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
@@ -34,11 +35,15 @@ export default function RootLayout({
           <ThemeProvider theme={theme}>
             <AppRouterCacheProvider>
               <CssBaseline />
-              <body className={`${pretendardGOV.className}`}>
+              <Stack
+                component="body"
+                gap="8px"
+                className={`${pretendardGOV.className}`}
+              >
                 <Header />
                 {children}
                 <Footer />
-              </body>
+              </Stack>
             </AppRouterCacheProvider>
           </ThemeProvider>
         </HydrationBoundary>
