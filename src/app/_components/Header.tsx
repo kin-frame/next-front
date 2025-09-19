@@ -3,7 +3,14 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import { Button, Drawer, IconButton, Stack, TextField } from "@mui/material";
+import {
+  Button,
+  Drawer,
+  IconButton,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 
@@ -14,27 +21,43 @@ export default function Header() {
   return (
     <Stack
       sx={{
-        position: "sticky",
-        top: 0,
-        zIndex: 1,
-        bgcolor: "white",
-
-        maxWidth: "1200px",
-        py: "16px",
-        [theme.breakpoints.down("lg")]: {
-          px: "8px",
-          py: "8px",
-        },
-        flexDirection: "row",
         alignItems: "center",
-        justifyContent: "flex-end",
         boxShadow: theme.shadows[1],
       }}
     >
-      <FileUploadButton />
-      <IconButton>
-        <MenuOutlinedIcon />
-      </IconButton>
+      <Stack
+        sx={{
+          position: "sticky",
+          top: 0,
+          zIndex: 1,
+          bgcolor: "white",
+
+          width: "100%",
+          maxWidth: "1200px",
+          py: "16px",
+          [theme.breakpoints.down("lg")]: {
+            px: "8px",
+            py: "8px",
+          },
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
+        <Typography fontWeight={700} fontSize={24}>
+          Kinframes
+        </Typography>
+        <Stack
+          sx={{
+            flexDirection: "row",
+            ml: "auto",
+          }}
+        >
+          <FileUploadButton />
+          <IconButton>
+            <MenuOutlinedIcon />
+          </IconButton>
+        </Stack>
+      </Stack>
     </Stack>
   );
 }

@@ -22,6 +22,7 @@ export default function PageWrapper({ children }: StackProps) {
         mx: "auto",
 
         [theme.breakpoints.up("lg")]: {
+          width: "100%",
           maxWidth: "1200px",
         },
         [theme.breakpoints.down("lg")]: {
