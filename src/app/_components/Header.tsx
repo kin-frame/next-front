@@ -12,6 +12,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 
@@ -130,7 +131,7 @@ function FileUploadButton() {
       path: { url: string };
       body: { file: File; id: number };
     }) => {
-      await api.put(path.url, body.file, {
+      await axios.put(path.url, body.file, {
         headers: { "Content-Type": body.file.type },
         onUploadProgress: (progressEvent) => {
           setFiles((prev) => {
@@ -221,7 +222,7 @@ function FileUploadButton() {
                   {Math.floor(f.file.size / 1024).toLocaleString()}KB)
                 </Typography>
               </Stack>
-              <LinearProgress value={f.progress} variant="determinate" />
+              <LinearProgress value={f.progress * 100} variant="determinate" />
             </Stack>
           ))}
           <Button
