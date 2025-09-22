@@ -46,4 +46,10 @@ export interface PagebleResDto<T> {
   totalPages: number;
   totalCount: number;
 }
+
+export interface PageProps {
+  searchParams: Promise<Record<string, string>>;
+  params: Promise<Record<string, string>>;
+}
+
 export default api;

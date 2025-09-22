@@ -1,6 +1,8 @@
 "use client";
 import Image from "next/image";
-import { Grid, Skeleton, Stack } from "@mui/material";
+import Link from "next/link";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import { Grid, IconButton, Skeleton, Stack } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 
 import api, { PagebleResDto } from "@/shared/api";
@@ -15,7 +17,7 @@ export default function PageContent() {
     ],
     queryFn: async () =>
       (
-        await api.get<PagebleResDto<{ id: number }>>("file", {
+        await api.get<PagebleResDto<{ id: number; fileType: string }>>("file", {
           params: {
             page: 0,
             size: 20,
@@ -46,7 +48,7 @@ export default function PageContent() {
             },
           }}
         >
-          <FilePreview fileId={v.id} />
+          <FilePreview fileId={v.id} fileType={v.fileType} />
         </Grid>
       ))}
     </>
@@ -55,9 +57,12 @@ export default function PageContent() {
 
 interface FilePreviewProps {
   fileId: number;
+  fileType: string;
 }
 
-function FilePreview({ fileId }: FilePreviewProps) {
+function FilePreview({ fileId, fileType }: FilePreviewProps) {
+  const isImage = fileType.includes("image");
+
   const { data, isFetching } = useQuery({
     queryKey: ["files", "presinged-url", "thumbnail", fileId],
     queryFn: async () =>
@@ -66,6 +71,7 @@ function FilePreview({ fileId }: FilePreviewProps) {
           params: { fileId },
         })
       ).data,
+    enabled: isImage,
   });
 
   return (
@@ -81,10 +87,49 @@ function FilePreview({ fileId }: FilePreviewProps) {
         },
       }}
     >
-      {isFetching || !data?.url ? (
-        <Skeleton variant="rectangular" sx={{ flex: 1 }} />
+      {isImage ? (
+        <>
+          {isFetching || !data?.url ? (
+            <Skeleton variant="rectangular" sx={{ flex: 1 }} />
+          ) : (
+            <Image src={data?.url} alt="" width={300} height={300} />
+          )}
+        </>
       ) : (
-        <Image src={data?.url} alt="" width={300} height={300} />
+        <Stack
+          sx={{
+            position: "relative",
+            flex: "1 1 auto",
+            overflow: "hidden",
+            ["video"]: {
+              height: "100%",
+              width: "100%",
+              objectFit: "cover",
+            },
+          }}
+        >
+          <video
+            src={`${process.env.NEXT_PUBLIC_API_URL}/file/stream/${fileId}`}
+            preload="metadata"
+            muted
+            playsInline
+          />
+          <IconButton
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+            }}
+            aria-label="영상 재생하기"
+            LinkComponent={Link}
+            href={`/file/${fileId}`}
+          >
+            <PlayArrowIcon
+              sx={{ color: "white", width: "40px", height: "40px" }}
+            />
+          </IconButton>
+        </Stack>
       )}
     </Stack>
   );
