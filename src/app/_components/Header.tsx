@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
@@ -7,6 +7,7 @@ import {
   Button,
   Drawer,
   IconButton,
+  LinearProgress,
   Stack,
   TextField,
   Typography,
@@ -62,9 +63,15 @@ export default function Header() {
   );
 }
 
+interface FileItem {
+  file: File;
+  progress: number;
+}
+
 function FileUploadButton() {
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
+  const [files, setFiles] = useState<FileItem[]>([]);
 
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -79,9 +86,17 @@ function FileUploadButton() {
       setOpen(open);
     };
 
-  const { handleSubmit, register, reset } = useForm<{ files: File[] }>();
+  const { handleSubmit, register, reset, watch } = useForm<{ files: File[] }>({
+    defaultValues: { files: [] },
+  });
 
-  const { mutate: mutatePresignedUrl } = useMutation({
+  const filesValue = watch("files");
+
+  useEffect(() => {
+    setFiles(Array.from(filesValue).map((v) => ({ progress: 0, file: v })));
+  }, [filesValue]);
+
+  const { mutate: mutatePresignedUrl, isPending: isPendingUrl } = useMutation({
     mutationFn: ({
       body,
     }: {
@@ -107,7 +122,7 @@ function FileUploadButton() {
     },
   });
 
-  const { mutate: uploadS3 } = useMutation({
+  const { mutate: uploadS3, isPending: isPendingUploadS3 } = useMutation({
     mutationFn: async ({
       path,
       body,
@@ -115,13 +130,24 @@ function FileUploadButton() {
       path: { url: string };
       body: { file: File; id: number };
     }) => {
-      const res = await fetch(path.url, {
-        method: "PUT",
+      await api.put(path.url, body.file, {
         headers: { "Content-Type": body.file.type },
-        body: body.file,
-      });
+        onUploadProgress: (progressEvent) => {
+          setFiles((prev) => {
+            const targetIndex = prev.findIndex(
+              (v) => v.file.name === body.file.name
+            );
 
-      if (!res.ok) throw new Error("S3 업로드 실패");
+            if (targetIndex < 0) return prev;
+
+            return [
+              ...prev.slice(0, targetIndex),
+              { ...prev[targetIndex], progress: progressEvent.progress || 0 },
+              ...prev.slice(targetIndex + 1),
+            ];
+          });
+        },
+      });
     },
     onSuccess: (data, { body }) => {
       mutateFileMeta({
@@ -132,7 +158,7 @@ function FileUploadButton() {
     },
   });
 
-  const { mutate: mutateFileMeta } = useMutation({
+  const { mutate: mutateFileMeta, isPending: isPendingFileMeta } = useMutation({
     mutationFn: ({ body }: { body: { id: number } }) =>
       api.post("/file/complete", {
         id: body.id,
@@ -156,14 +182,16 @@ function FileUploadButton() {
           component="form"
           sx={{ gap: "8px", p: "8px" }}
           onSubmit={handleSubmit((data) => {
-            mutatePresignedUrl({
-              body: {
-                lastModified: dayjs(data.files[0].lastModified).toISOString(),
-                fileName: data.files[0].name,
-                fileSize: data.files[0].size,
-                fileType: data.files[0].type,
-                file: data.files[0],
-              },
+            Array.from(data.files).forEach((file) => {
+              mutatePresignedUrl({
+                body: {
+                  lastModified: dayjs(file.lastModified).toISOString(),
+                  fileName: file.name,
+                  fileSize: file.size,
+                  fileType: file.type,
+                  file: file,
+                },
+              });
             });
           })}
         >
@@ -178,7 +206,30 @@ function FileUploadButton() {
             type="file"
             size="small"
           />
-          <Button type="submit">전송</Button>
+          {files?.map((f) => (
+            <Stack
+              key={f.file.name}
+              sx={{
+                gap: "4px",
+              }}
+            >
+              <Stack
+                sx={{ flexDirection: "row", justifyContent: "space-between" }}
+              >
+                <Typography fontSize={12}>
+                  {f.file.name} (
+                  {Math.floor(f.file.size / 1024).toLocaleString()}KB)
+                </Typography>
+              </Stack>
+              <LinearProgress value={f.progress} variant="determinate" />
+            </Stack>
+          ))}
+          <Button
+            type="submit"
+            loading={isPendingFileMeta || isPendingUploadS3 || isPendingUrl}
+          >
+            전송
+          </Button>
         </Stack>
       </Drawer>
     </>

@@ -11,14 +11,14 @@ export default function PageContent() {
     queryKey: [
       "files",
       "list",
-      { page: 0, size: 10, sort: ["lastModified,DESC"] },
+      { page: 0, size: 20, sort: ["lastModified,DESC"] },
     ],
     queryFn: async () =>
       (
         await api.get<PagebleResDto<{ id: number }>>("file", {
           params: {
             page: 0,
-            size: 10,
+            size: 20,
             sort: ["lastModified,DESC", "createdAt,ASC"],
           },
           paramsSerializer: { indexes: null },
