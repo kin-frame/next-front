@@ -74,6 +74,17 @@ function FilePreview({ fileId, fileType }: FilePreviewProps) {
     enabled: isImage,
   });
 
+  const { data: urlData } = useQuery({
+    queryKey: ["files", "presinged-url", fileId],
+    queryFn: async () =>
+      (
+        await api.get<{ url: string }>("/file/presigned-url", {
+          params: { fileId },
+        })
+      ).data,
+    enabled: !isImage,
+  });
+
   return (
     <Stack
       sx={{
@@ -109,7 +120,8 @@ function FilePreview({ fileId, fileType }: FilePreviewProps) {
           }}
         >
           <video
-            src={`${process.env.NEXT_PUBLIC_API_URL}/file/stream/${fileId}`}
+            // src={`${process.env.NEXT_PUBLIC_API_URL}/file/stream/${fileId}`}
+            src={urlData?.url}
             preload="metadata"
             muted
             playsInline

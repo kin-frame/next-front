@@ -18,17 +18,30 @@ export default function PageContent() {
   // const isImage = data?.fileType.includes("image");
   const isVideo = data?.fileType.includes("video");
 
+  const { data: urlData } = useQuery({
+    queryKey: ["files", "presinged-url", id],
+    queryFn: async () =>
+      (
+        await api.get<{ url: string }>("/file/presigned-url", {
+          params: { fileId: id },
+        })
+      ).data,
+    enabled: isVideo,
+  });
+
   return (
     <Stack
       sx={{
         ["video"]: {
           width: "100%",
+          maxHeight: "80vh",
         },
       }}
     >
       {isVideo && (
         <video
-          src={`${process.env.NEXT_PUBLIC_API_URL}/file/stream/${id}`}
+          // src={`${process.env.NEXT_PUBLIC_API_URL}/file/stream/${id}`}
+          src={urlData?.url}
           controls
         />
       )}
