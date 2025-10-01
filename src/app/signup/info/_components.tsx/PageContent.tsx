@@ -1,19 +1,11 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { Button, Grid, Stack, Typography } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
 
-import api from "@/shared/api";
+import { useLogoutMutation } from "@/services/auth/query";
 import theme from "@/shared/mui/theme";
 
 export default function PageContent() {
-  const router = useRouter();
-  const { mutate: logout } = useMutation({
-    mutationFn: () => api.post(`/auth/logout`),
-    onSuccess: () => {
-      router.replace("/login");
-    },
-  });
+  const { mutate: logout } = useLogoutMutation();
 
   return (
     <Grid size={12}>

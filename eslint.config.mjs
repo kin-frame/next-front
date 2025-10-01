@@ -51,6 +51,7 @@ const eslintConfig = [
               "^@/widgets",
               "^@/features",
               "^@/entities",
+              "^@/services",
               "^@/shared",
               // Side effect imports.
               "^\\u0000",

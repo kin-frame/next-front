@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
+import LogoutIcon from "@mui/icons-material/Logout";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import {
   Button,
@@ -16,6 +17,7 @@ import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 
+import { useLogoutMutation } from "@/services/auth/query";
 import api from "@/shared/api";
 import useUserContext from "@/shared/hook/useUserContext";
 import theme from "@/shared/mui/theme";
@@ -46,6 +48,7 @@ export default function Header() {
           alignItems: "center",
         }}
       >
+        <SideMenuButton />
         <Typography
           fontWeight={700}
           fontSize={24}
@@ -62,9 +65,7 @@ export default function Header() {
           }}
         >
           <FileUploadButton />
-          <IconButton>
-            <MenuOutlinedIcon />
-          </IconButton>
+          <LogoutButton />
         </Stack>
       </Stack>
     </Stack>
@@ -245,5 +246,48 @@ function FileUploadButton() {
         </Stack>
       </Drawer>
     </>
+  );
+}
+
+function SideMenuButton() {
+  const [open, setOpen] = useState(false);
+
+  const toggleDrawer =
+    (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event.type === "keydown" &&
+        ((event as React.KeyboardEvent).key === "Tab" ||
+          (event as React.KeyboardEvent).key === "Shift")
+      ) {
+        return;
+      }
+
+      setOpen(open);
+    };
+
+  return (
+    <>
+      <IconButton onClick={toggleDrawer(true)}>
+        <MenuOutlinedIcon />
+      </IconButton>
+      <Drawer anchor={"left"} open={open} onClose={toggleDrawer(false)}>
+        <Stack sx={{ gap: "8px", p: "8px" }}>About us</Stack>
+      </Drawer>
+    </>
+  );
+}
+
+function LogoutButton() {
+  const { mutate: logout } = useLogoutMutation();
+
+  return (
+    <IconButton
+      aria-label="로그아웃"
+      onClick={() => {
+        logout();
+      }}
+    >
+      <LogoutIcon />
+    </IconButton>
   );
 }
