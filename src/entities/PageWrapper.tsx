@@ -29,6 +29,7 @@ export default function PageWrapper({ children }: StackProps) {
         [theme.breakpoints.down("lg")]: {
           mx: "16px",
           pt: "24px",
+          minHeight: "70vh",
         },
       }}
     >

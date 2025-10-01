@@ -1,8 +1,9 @@
 import axios from "axios";
 
+export const API_URL = process.env.NEXT_PUBLIC_API_URL;
 // axios 인스턴스 생성
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL, // 환경변수 기반
+  baseURL: API_URL, // 환경변수 기반
   withCredentials: true, // 쿠키/세션 필요 시
   timeout: 5000,
 });

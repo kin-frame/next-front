@@ -16,7 +16,10 @@ export function middleware(request: NextRequest) {
 function withoutTokenMiddleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
-  if (!pathname.startsWith("/login")) {
+  if (
+    !pathname.startsWith("/login") &&
+    !pathname.startsWith("/auth/callback")
+  ) {
     return NextResponse.redirect(new URL("/login", request.url));
   } else {
     return NextResponse.next();
