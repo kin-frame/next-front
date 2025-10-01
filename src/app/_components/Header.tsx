@@ -17,6 +17,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 
 import api from "@/shared/api";
+import useUserContext from "@/shared/hook/useUserContext";
 import theme from "@/shared/mui/theme";
 
 export default function Header() {
@@ -70,6 +71,8 @@ interface FileItem {
 }
 
 function FileUploadButton() {
+  const { isLogin } = useUserContext();
+
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const [files, setFiles] = useState<FileItem[]>([]);
@@ -172,6 +175,8 @@ function FileUploadButton() {
       });
     },
   });
+
+  if (!isLogin) return null;
 
   return (
     <>
