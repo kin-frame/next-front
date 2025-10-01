@@ -46,7 +46,13 @@ export default function Header() {
           alignItems: "center",
         }}
       >
-        <Typography fontWeight={700} fontSize={24}>
+        <Typography
+          fontWeight={700}
+          fontSize={24}
+          sx={{
+            mx: "8px",
+          }}
+        >
           Kinframes
         </Typography>
         <Stack

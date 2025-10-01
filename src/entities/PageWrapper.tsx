@@ -24,9 +24,11 @@ export default function PageWrapper({ children }: StackProps) {
         [theme.breakpoints.up("lg")]: {
           width: "100%",
           maxWidth: "1200px",
+          pt: "40px",
         },
         [theme.breakpoints.down("lg")]: {
           mx: "16px",
+          pt: "24px",
         },
       }}
     >
