@@ -20,6 +20,8 @@ export default function PageWrapper({ children }: StackProps) {
       }}
       sx={{
         mx: "auto",
+        alignItems: "flex-start",
+        alignContent: "flex-start",
 
         [theme.breakpoints.up("lg")]: {
           width: "100%",

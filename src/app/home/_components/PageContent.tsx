@@ -2,8 +2,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import { Grid, IconButton, Skeleton, Stack } from "@mui/material";
+import { Grid, IconButton, Skeleton, Stack, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
 
 import api, { PagebleResDto } from "@/shared/api";
 import theme from "@/shared/mui/theme";
@@ -30,7 +31,11 @@ export default function PageContent() {
 
   return (
     <>
-      <Grid size={12}></Grid>
+      <Grid size={12}>
+        <Typography fontWeight={700}>
+          {dayjs().format("YYYY년 M월 D일")}
+        </Typography>
+      </Grid>
       {data?.content.map((v) => (
         <Grid
           size={1}
