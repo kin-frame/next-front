@@ -6,7 +6,9 @@ import { ThemeProvider } from "@mui/material/styles";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
+import { JwtPayload } from "@/shared/config/roles";
 import theme from "@/shared/mui/theme";
+import parseJwt from "@/shared/util/parseJwt";
 import Body from "./_components/Body";
 import { getQueryClient } from "./_query/get-query-client";
 import Providers from "./_query/providers";
@@ -28,6 +30,7 @@ export default async function RootLayout({
   const queryClient = getQueryClient();
   const cookieStore = await cookies();
   const accessToken = cookieStore.get("access_token")?.value;
+  const { status, role } = parseJwt<JwtPayload>(accessToken);
 
   return (
     <html lang="en" className={`${pretendardGOV.className}`}>
@@ -36,7 +39,9 @@ export default async function RootLayout({
           <ThemeProvider theme={theme}>
             <AppRouterCacheProvider>
               <CssBaseline />
-              <Body isLogin={!!accessToken}>{children}</Body>
+              <Body isLogin={!!accessToken} status={status} role={role}>
+                {children}
+              </Body>
             </AppRouterCacheProvider>
           </ThemeProvider>
         </HydrationBoundary>

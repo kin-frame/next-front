@@ -19,6 +19,7 @@ import dayjs from "dayjs";
 
 import { useLogoutMutation } from "@/services/auth/query";
 import api from "@/shared/api";
+import { ROLES } from "@/shared/config/roles";
 import useUserContext from "@/shared/hook/useUserContext";
 import theme from "@/shared/mui/theme";
 
@@ -78,7 +79,7 @@ interface FileItem {
 }
 
 function FileUploadButton() {
-  const { isLogin } = useUserContext();
+  const { isLogin, role } = useUserContext();
 
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
@@ -183,7 +184,7 @@ function FileUploadButton() {
     },
   });
 
-  if (!isLogin) return null;
+  if (!isLogin || role === ROLES.GUEST) return null;
 
   return (
     <>
