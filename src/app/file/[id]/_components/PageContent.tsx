@@ -1,7 +1,10 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { useParams } from "next/navigation";
-import { Grid, Skeleton, Stack, Typography } from "@mui/material";
+import { useState } from "react";
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import { Button, Grid, Skeleton, Stack, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 
 import api from "@/shared/api";
@@ -13,7 +16,12 @@ export default function PageContent() {
   const { data } = useQuery({
     queryKey: ["files", id],
     queryFn: async () =>
-      (await api.get<{ fileType: string }>(`/file/${id}`, {})).data,
+      (
+        await api.get<{ fileType: string; width: number; height: number }>(
+          `/file/${id}`,
+          {}
+        )
+      ).data,
   });
 
   const isImage = data?.fileType.includes("image");
@@ -32,11 +40,20 @@ export default function PageContent() {
 
   if (isFetching)
     return (
-      <Grid size={12} alignSelf="stretch">
+      <Grid
+        size={12}
+        alignSelf="stretch"
+        sx={{
+          height: "500px",
+        }}
+      >
         <Skeleton
           variant="rectangular"
           sx={{
-            flex: 1,
+            width: "100%",
+            height: "unset",
+            aspectRatio:
+              data?.height && data.width ? data.width / data.height : 0,
           }}
         />
       </Grid>
@@ -47,6 +64,7 @@ export default function PageContent() {
       <Stack
         sx={{
           position: "relative",
+          gap: "16px",
           ["img"]: {
             width: "100%",
             objectFit: "contain",
@@ -66,6 +84,17 @@ export default function PageContent() {
             controls
           />
         )}
+        <Button
+          variant="outlined"
+          startIcon={<MenuOutlinedIcon />}
+          sx={{
+            alignSelf: "flex-start",
+          }}
+          LinkComponent={Link}
+          href={`/file`}
+        >
+          목록
+        </Button>
       </Stack>
     </Grid>
   );
@@ -74,6 +103,19 @@ export default function PageContent() {
 function FileImage() {
   const params = useParams<{ id: string }>();
   const id = Number(params.id);
+
+  const [loaded, setLoaded] = useState(false);
+
+  const { data } = useQuery({
+    queryKey: ["files", id],
+    queryFn: async () =>
+      (
+        await api.get<{ fileType: string; width: number; height: number }>(
+          `/file/${id}`,
+          {}
+        )
+      ).data,
+  });
 
   const { data: urlData } = useQuery({
     queryKey: ["files", "presinged-url", id],
@@ -90,13 +132,30 @@ function FileImage() {
   }
 
   return (
-    <Image
-      src={urlData?.url}
-      alt=""
-      aria-hidden
-      width={10000}
-      height={10000}
-      priority
-    />
+    <>
+      {!loaded && (
+        <Skeleton
+          variant="rectangular"
+          sx={{
+            position: "absolute",
+            width: "100%",
+            height: "unset",
+            aspectRatio:
+              data?.height && data.width ? data.width / data.height : 0,
+          }}
+        />
+      )}
+      <Image
+        src={urlData?.url}
+        alt=""
+        aria-hidden
+        width={data?.width}
+        height={data?.height}
+        priority
+        onLoad={() => {
+          setLoaded(true);
+        }}
+      />
+    </>
   );
 }

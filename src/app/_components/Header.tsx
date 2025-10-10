@@ -22,6 +22,7 @@ import api from "@/shared/api";
 import { ROLES } from "@/shared/config/roles";
 import useUserContext from "@/shared/hook/useUserContext";
 import theme from "@/shared/mui/theme";
+import { getFileMetaSize } from "@/shared/util/file";
 
 export default function Header() {
   return (
@@ -118,6 +119,8 @@ function FileUploadButton() {
         fileSize: number;
         fileType: string;
         file: File;
+        width: number;
+        height: number;
       };
     }) =>
       api.post<{ url: string; id: number }>("/file/presigned-url", {
@@ -196,7 +199,8 @@ function FileUploadButton() {
           component="form"
           sx={{ gap: "8px", p: "8px" }}
           onSubmit={handleSubmit((data) => {
-            Array.from(data.files).forEach((file) => {
+            Array.from(data.files).forEach(async (file) => {
+              const { width, height } = await getFileMetaSize(file);
               mutatePresignedUrl({
                 body: {
                   lastModified: dayjs(file.lastModified).toISOString(),
@@ -204,6 +208,8 @@ function FileUploadButton() {
                   fileSize: file.size,
                   fileType: file.type,
                   file: file,
+                  width,
+                  height,
                 },
               });
             });
