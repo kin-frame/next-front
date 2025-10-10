@@ -128,6 +128,8 @@ function FileUploadButton() {
         fileName: body?.fileName,
         fileSize: body?.fileSize,
         fileType: body?.fileType,
+        width: body?.width,
+        height: body.height,
       }),
     onSuccess: ({ data }, { body }) => {
       uploadS3({
