@@ -6,6 +6,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
+import api from "@/shared/api";
 import { JwtPayload } from "@/shared/config/roles";
 import theme from "@/shared/mui/theme";
 import parseJwt from "@/shared/util/parseJwt";
@@ -27,7 +28,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const queryClient = getQueryClient();
   const cookieStore = await cookies();
   const accessToken = cookieStore.get("access_token")?.value;
   const { status, role } = parseJwt<JwtPayload>(accessToken);
@@ -35,7 +35,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${pretendardGOV.className}`}>
       <Providers>
-        <HydrationBoundary state={dehydrate(queryClient)}>
+        <HydrationBoundary state={await prefetchData()}>
           <ThemeProvider theme={theme}>
             <AppRouterCacheProvider>
               <CssBaseline />
@@ -48,4 +48,25 @@ export default async function RootLayout({
       </Providers>
     </html>
   );
+}
+
+async function prefetchData() {
+  const cookieStore = await cookies();
+  const queryClient = getQueryClient();
+
+  await Promise.all([
+    await queryClient.prefetchQuery({
+      queryKey: ["user", "me"],
+      queryFn: async () =>
+        (
+          await api.get<{ fileType: string }>(`/user/me`, {
+            headers: {
+              cookie: cookieStore.toString(),
+            },
+          })
+        ).data,
+    }),
+  ]);
+
+  return dehydrate(queryClient);
 }

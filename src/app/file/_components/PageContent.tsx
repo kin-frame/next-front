@@ -116,7 +116,10 @@ function FilePreview({ fileId, fileType }: FilePreviewProps) {
           href={`/file/${fileId}`}
         >
           {isFetching || !data?.url ? (
-            <Skeleton variant="rectangular" sx={{ flex: 1 }} />
+            <Skeleton
+              variant="rectangular"
+              sx={{ width: "100%", height: "100%" }}
+            />
           ) : (
             <Image src={data?.url} alt="" width={300} height={300} />
           )}
