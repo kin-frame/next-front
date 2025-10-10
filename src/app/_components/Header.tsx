@@ -27,17 +27,17 @@ export default function Header() {
   return (
     <Stack
       sx={{
+        position: "sticky",
+        top: 0,
+        zIndex: 1,
+        bgcolor: "white",
+
         alignItems: "center",
         boxShadow: theme.shadows[1],
       }}
     >
       <Stack
         sx={{
-          position: "sticky",
-          top: 0,
-          zIndex: 1,
-          bgcolor: "white",
-
           width: "100%",
           maxWidth: "1200px",
           py: "16px",
@@ -188,7 +188,7 @@ function FileUploadButton() {
 
   return (
     <>
-      <IconButton onClick={toggleDrawer(true)}>
+      <IconButton onClick={toggleDrawer(true)} aria-label="파일 업로드하기">
         <FileUploadOutlinedIcon />
       </IconButton>
       <Drawer anchor={"bottom"} open={open} onClose={toggleDrawer(false)}>

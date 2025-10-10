@@ -15,7 +15,13 @@ type BodyProps = React.PropsWithChildren<{
 export default function Body({ isLogin, status, role, children }: BodyProps) {
   return (
     <UserContext.Provider value={{ isLogin, status, role }}>
-      <Stack component="body" gap="8px">
+      <Stack
+        component="body"
+        gap="8px"
+        sx={{
+          minHeight: "100vh",
+        }}
+      >
         <Header />
         {children}
         <Footer />

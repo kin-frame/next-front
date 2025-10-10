@@ -22,6 +22,7 @@ export default function PageWrapper({ children }: StackProps) {
         mx: "auto",
         alignItems: "flex-start",
         alignContent: "flex-start",
+        flex: 1,
 
         [theme.breakpoints.up("lg")]: {
           width: "100%",
@@ -31,7 +32,6 @@ export default function PageWrapper({ children }: StackProps) {
         [theme.breakpoints.down("lg")]: {
           mx: "16px",
           pt: "24px",
-          minHeight: "70vh",
         },
       }}
     >

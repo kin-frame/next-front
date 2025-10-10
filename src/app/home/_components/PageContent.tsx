@@ -95,22 +95,32 @@ function FilePreview({ fileId, fileType }: FilePreviewProps) {
       sx={{
         width: "100%",
         height: "100%",
-        ["img"]: {
-          width: "100%",
-          height: "auto",
-          aspectRatio: 1,
-          objectFit: "cover",
-        },
       }}
     >
       {isImage ? (
-        <>
+        <IconButton
+          sx={{
+            position: "relative",
+            flex: "1 1 auto",
+            overflow: "hidden",
+            padding: 0,
+            borderRadius: 0,
+            ["img"]: {
+              height: "100%",
+              width: "100%",
+              objectFit: "cover",
+            },
+          }}
+          aria-label="이미지 자세히보기"
+          LinkComponent={Link}
+          href={`/file/${fileId}`}
+        >
           {isFetching || !data?.url ? (
             <Skeleton variant="rectangular" sx={{ flex: 1 }} />
           ) : (
             <Image src={data?.url} alt="" width={300} height={300} />
           )}
-        </>
+        </IconButton>
       ) : (
         <Stack
           sx={{
@@ -138,7 +148,7 @@ function FilePreview({ fileId, fileType }: FilePreviewProps) {
               left: "50%",
               transform: "translate(-50%, -50%)",
             }}
-            aria-label="영상 재생하기"
+            aria-label="영상 자세히보기"
             LinkComponent={Link}
             href={`/file/${fileId}`}
           >
