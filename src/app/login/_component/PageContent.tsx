@@ -62,6 +62,7 @@ export default function PageContent({ url }: PageContentProps) {
         href={url}
         startIcon={
           <Image
+            unoptimized
             src="/icon/google.svg"
             alt=""
             aria-hidden
