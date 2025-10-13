@@ -146,7 +146,6 @@ function FileImage() {
         />
       )}
       <Image
-        unoptimized
         src={urlData?.url}
         alt=""
         aria-hidden
