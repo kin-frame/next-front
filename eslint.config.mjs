@@ -36,6 +36,7 @@ const eslintConfig = [
               "^react",
               "^@mui",
               "axios",
+              "^jotai",
               "recharts",
               "^@tanstack",
               "^@dnd-kit",

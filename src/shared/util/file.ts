@@ -69,3 +69,19 @@ function getVideoSize(file: File) {
       });
   });
 }
+
+const FILE_UNITS = ["B", "KB", "MB", "GB", "TB"];
+
+export function formatFileSize(size: number, significantDigits = 3): string {
+  let unitIndex = 0;
+
+  while (size >= 1024 && unitIndex < FILE_UNITS.length - 1) {
+    size /= 1024;
+    unitIndex++;
+  }
+
+  // 유효숫자 기준으로 반올림 (예: 1234 → 1.23e3)
+  const formatted = Number(size.toPrecision(significantDigits));
+
+  return `${formatted}${FILE_UNITS[unitIndex]}`;
+}
