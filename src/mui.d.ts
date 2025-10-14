@@ -25,4 +25,11 @@ declare module "@mui/material/Button" {
     point: true;
     danger: true;
   }
+  interface ButtonPropsSizeOverrides {
+    xsmall: true;
+  }
+
+  interface ButtonClasses {
+    sizeXsmall: string;
+  }
 }

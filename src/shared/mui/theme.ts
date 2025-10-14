@@ -126,7 +126,26 @@ const theme = createTheme({
         variant: "contained",
         disableElevation: true,
       },
-      styleOverrides: {},
+      styleOverrides: {
+        sizeXsmall: {
+          minWidth: "unset",
+          height: "28px",
+        },
+      },
+    },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          margin: 0,
+          fontSize: 14,
+          position: "absolute",
+          bottom: 0,
+          transform: "translate(0, 100%)",
+        },
+        error: ({ theme }) => ({
+          color: theme.palette.error.main,
+        }),
+      },
     },
   },
 });
