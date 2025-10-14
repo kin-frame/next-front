@@ -67,15 +67,24 @@ export default function FileList() {
               <ListItemButton
                 sx={{
                   px: "4px",
+                  gap: "8px",
                 }}
                 LinkComponent={Link}
                 href={`/file/${v.id}`}
               >
-                <ListItemAvatar>
+                <ListItemAvatar sx={{ minWidth: "48px" }}>
                   <FileListPreview fileId={v.id} fileType={v.fileType} />
                 </ListItemAvatar>
                 <ListItemText
-                  sx={{ overflow: "hidden" }}
+                  sx={{
+                    overflow: "hidden",
+                    [`.${listItemTextClasses.primary},.${listItemTextClasses.secondary} `]:
+                      {
+                        whiteSpace: "nowrap",
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
+                      },
+                  }}
                   primary={v.fileName}
                   secondary={dayjs(v.createdAt).format(
                     "YYYY년 MM월 DD일 H시 M분"

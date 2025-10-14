@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 
 export const API_URL = process.env.NEXT_PUBLIC_API_URL;
 // axios 인스턴스 생성
@@ -7,6 +7,13 @@ const api = axios.create({
   withCredentials: true, // 쿠키/세션 필요 시
   timeout: 5000,
 });
+
+export function isApiError<T>(error: unknown) {
+  return isAxiosError<{
+    error: string;
+    message: { field: keyof T; message: string }[];
+  }>(error);
+}
 
 // 요청 인터셉터
 // api.interceptors.request.use(
