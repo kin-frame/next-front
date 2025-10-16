@@ -1,4 +1,5 @@
 "use client";
+import { useSearchParams } from "next/navigation";
 import {
   Controller,
   FormProvider,
@@ -8,29 +9,50 @@ import {
 import CreateNewFolderOutlinedIcon from "@mui/icons-material/CreateNewFolderOutlined";
 import { IconButton, TextField } from "@mui/material";
 import { useAtomValue } from "jotai";
-import { useMutation } from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
 
 import { useGlobalModal } from "@/app/_atoms/globalModal";
+import { directoryApi } from "@/services/directory";
 import api, { isApiError } from "@/shared/api";
 import { listTypeAtom } from "../_atoms/listType";
 
 type CreateRequestDto = { directoryName: string };
 
 export default function CreateDirectoryButton() {
+  const searchParams = useSearchParams();
   const listType = useAtomValue(listTypeAtom);
   const { open, close, loading } = useGlobalModal();
 
   const formMethod = useForm<CreateRequestDto>();
   const { handleSubmit, setError, reset } = formMethod;
 
+  const { data: rootData } = useQuery({
+    queryKey: ["directory", "root"],
+    queryFn: async () => (await directoryApi.getRootDirectory()).data,
+  });
+
+  const directoryId =
+    Number(searchParams.get("directoryId")) || rootData?.id || 0;
+
+  const { refetch } = useQuery({
+    queryKey: ["directory", { directoryId }],
+    queryFn: async () =>
+      (await directoryApi.getDirectoryChildren({ query: { directoryId } }))
+        .data,
+    placeholderData: keepPreviousData,
+    enabled: !!directoryId,
+  });
+
   const { mutate: mutateCreate } = useMutation({
     mutationFn: ({ body }: { body: CreateRequestDto }) =>
       api.post("/directory", {
         directoryName: body.directoryName,
+        parentId: directoryId,
       }),
     onSuccess: () => {
       loading(false);
       close();
+      refetch();
     },
     onError: (error) => {
       if (isApiError<CreateRequestDto>(error)) {
