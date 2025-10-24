@@ -15,13 +15,11 @@ export default function PageContent() {
 
   const { data } = useQuery({
     queryKey: ["files", id],
-    queryFn: async () =>
-      (
-        await api.get<{ fileType: string; width: number; height: number }>(
-          `/file/${id}`,
-          {}
-        )
-      ).data,
+    queryFn: () =>
+      api.get<null, { fileType: string; width: number; height: number }>(
+        `/file/${id}`,
+        {}
+      ),
   });
 
   const isImage = data?.fileType.includes("image");
@@ -108,23 +106,19 @@ function FileImage() {
 
   const { data } = useQuery({
     queryKey: ["files", id],
-    queryFn: async () =>
-      (
-        await api.get<{ fileType: string; width: number; height: number }>(
-          `/file/${id}`,
-          {}
-        )
-      ).data,
+    queryFn: () =>
+      api.get<null, { fileType: string; width: number; height: number }>(
+        `/file/${id}`,
+        {}
+      ),
   });
 
   const { data: urlData } = useQuery({
     queryKey: ["files", "presinged-url", id],
-    queryFn: async () =>
-      (
-        await api.get<{ url: string }>("/file/presigned-url", {
-          params: { fileId: id },
-        })
-      ).data,
+    queryFn: () =>
+      api.get<null, { url: string }>("/file/presigned-url", {
+        params: { fileId: id },
+      }),
   });
 
   if (!urlData) {

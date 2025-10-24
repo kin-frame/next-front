@@ -19,7 +19,7 @@ import {
 } from "@tanstack/react-query";
 import dayjs from "dayjs";
 
-import { directoryApi } from "@/services/directory";
+import { directoryQuery } from "@/services/directory/query";
 import { formatFileSize } from "@/shared/util/file";
 import FileListPreview from "./FileListPreview";
 
@@ -29,8 +29,7 @@ export default function FileList() {
   const queryClient = useQueryClient();
 
   const { data: rootData } = useQuery({
-    queryKey: ["directory", "root"],
-    queryFn: async () => (await directoryApi.getRootDirectory()).data,
+    ...directoryQuery.getRootDirectory(),
   });
 
   const directoryId =
@@ -40,18 +39,19 @@ export default function FileList() {
     !searchParams.get("directoryId");
 
   const { data } = useQuery({
-    queryKey: ["directory", { directoryId }],
-    queryFn: async () =>
-      (await directoryApi.getDirectoryChildren({ query: { directoryId } }))
-        .data,
+    ...directoryQuery.getDirectoryChildren({
+      query: { directoryId },
+    }),
     placeholderData: keepPreviousData,
     enabled: !!directoryId,
   });
 
   const { data: infoData } = useQuery({
-    queryKey: ["directory", "info", { directoryId }],
-    queryFn: async () =>
-      (await directoryApi.getDirectoryInfo({ query: { directoryId } })).data,
+    ...directoryQuery.getDirectoryInfo({
+      query: {
+        directoryId,
+      },
+    }),
     placeholderData: keepPreviousData,
     enabled: !!directoryId,
   });
@@ -102,13 +102,9 @@ export default function FileList() {
                 onClick={async (event) => {
                   event.preventDefault();
                   await queryClient.prefetchQuery({
-                    queryKey: ["directory", { directoryId: v.id }],
-                    queryFn: async () =>
-                      (
-                        await directoryApi.getDirectoryChildren({
-                          query: { directoryId: v.id },
-                        })
-                      ).data,
+                    ...directoryQuery.getDirectoryChildren({
+                      query: { directoryId: v.id },
+                    }),
                   });
                   router.push(`/file?directoryId=${v.id}`);
                 }}

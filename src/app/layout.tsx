@@ -57,14 +57,12 @@ async function prefetchData() {
   await Promise.all([
     await queryClient.prefetchQuery({
       queryKey: ["user", "me"],
-      queryFn: async () =>
-        (
-          await api.get<{ fileType: string }>(`/user/me`, {
-            headers: {
-              cookie: cookieStore.toString(),
-            },
-          })
-        ).data,
+      queryFn: () =>
+        api.get<{ fileType: string }>(`/user/me`, {
+          headers: {
+            cookie: cookieStore.toString(),
+          },
+        }),
     }),
   ]);
 

@@ -30,16 +30,9 @@ export function isApiError<T>(error: unknown) {
 // );
 
 // 응답 인터셉터
-// api.interceptors.response.use(
-//   (response) => response.data, // data만 반환
-//   (error) => {
-//     // 예: 토큰 만료 처리
-//     if (error.response?.status === 401) {
-//       console.warn("인증 오류");
-//     }
-//     return Promise.reject(error);
-//   }
-// );
+api.interceptors.response.use(
+  (response) => response.data // data만 반환
+);
 
 export interface PagebleReqDto {
   page: number;

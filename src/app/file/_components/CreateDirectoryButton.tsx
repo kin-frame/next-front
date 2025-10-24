@@ -12,7 +12,7 @@ import { useAtomValue } from "jotai";
 import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
 
 import { useGlobalModal } from "@/app/_atoms/globalModal";
-import { directoryApi } from "@/services/directory";
+import { directoryQuery } from "@/services/directory/query";
 import api, { isApiError } from "@/shared/api";
 import { listTypeAtom } from "../_atoms/listType";
 
@@ -27,18 +27,14 @@ export default function CreateDirectoryButton() {
   const { handleSubmit, setError, reset } = formMethod;
 
   const { data: rootData } = useQuery({
-    queryKey: ["directory", "root"],
-    queryFn: async () => (await directoryApi.getRootDirectory()).data,
+    ...directoryQuery.getRootDirectory(),
   });
 
   const directoryId =
     Number(searchParams.get("directoryId")) || rootData?.id || 0;
 
   const { refetch } = useQuery({
-    queryKey: ["directory", { directoryId }],
-    queryFn: async () =>
-      (await directoryApi.getDirectoryChildren({ query: { directoryId } }))
-        .data,
+    ...directoryQuery.getDirectoryChildren({ query: { directoryId } }),
     placeholderData: keepPreviousData,
     enabled: !!directoryId,
   });

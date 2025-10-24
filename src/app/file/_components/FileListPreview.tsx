@@ -18,23 +18,19 @@ export default function FileListPreview({
 
   const { data, isFetching } = useQuery({
     queryKey: ["files", "presinged-url", "thumbnail", fileId],
-    queryFn: async () =>
-      (
-        await api.get<{ url: string }>("/file/presigned-url/thumbnail", {
-          params: { fileId },
-        })
-      ).data,
+    queryFn: () =>
+      api.get<null, { url: string }>("/file/presigned-url/thumbnail", {
+        params: { fileId },
+      }),
     enabled: isImage,
   });
 
   const { data: urlData } = useQuery({
     queryKey: ["files", "presinged-url", fileId],
-    queryFn: async () =>
-      (
-        await api.get<{ url: string }>("/file/presigned-url", {
-          params: { fileId },
-        })
-      ).data,
+    queryFn: () =>
+      api.get<null, { url: string }>("/file/presigned-url", {
+        params: { fileId },
+      }),
     enabled: !isImage,
   });
 

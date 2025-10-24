@@ -14,17 +14,15 @@ export default function FileGrid() {
       "list",
       { page: 0, size: 20, sort: ["lastModified,DESC"] },
     ],
-    queryFn: async () =>
-      (
-        await api.get<PagebleResDto<{ id: number; fileType: string }>>("file", {
-          params: {
-            page: 0,
-            size: 20,
-            sort: ["lastModified,DESC", "createdAt,ASC"],
-          },
-          paramsSerializer: { indexes: null },
-        })
-      ).data,
+    queryFn: () =>
+      api.get<null, PagebleResDto<{ id: number; fileType: string }>>("file", {
+        params: {
+          page: 0,
+          size: 20,
+          sort: ["lastModified,DESC", "createdAt,ASC"],
+        },
+        paramsSerializer: { indexes: null },
+      }),
   });
 
   return (

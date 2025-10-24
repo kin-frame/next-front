@@ -8,7 +8,7 @@ export default function UserInfo() {
   const { data } = useQuery({
     queryKey: ["user", "me"],
     queryFn: async () =>
-      (await api.get<{ name: string; email: string }>(`/user/me`, {})).data,
+      api.get<null, { name: string; email: string }>(`/user/me`, {}),
   });
 
   return (
