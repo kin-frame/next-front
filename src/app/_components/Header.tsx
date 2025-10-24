@@ -123,7 +123,7 @@ function FileUploadButton() {
         height: number;
       };
     }) =>
-      api.post<{ url: string; id: number }>("/file/presigned-url", {
+      api.post<null, { url: string; id: number }>("/file/presigned-url", {
         lastModified: body?.lastModified,
         fileName: body?.fileName,
         fileSize: body?.fileSize,
@@ -131,7 +131,7 @@ function FileUploadButton() {
         width: body?.width,
         height: body.height,
       }),
-    onSuccess: ({ data }, { body }) => {
+    onSuccess: (data, { body }) => {
       uploadS3({
         path: { url: data.url },
         body: { file: body.file, id: data.id },

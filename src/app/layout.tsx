@@ -58,7 +58,7 @@ async function prefetchData() {
     await queryClient.prefetchQuery({
       queryKey: ["user", "me"],
       queryFn: () =>
-        api.get<{ fileType: string }>(`/user/me`, {
+        api.get<null, { fileType: string }>(`/user/me`, {
           headers: {
             cookie: cookieStore.toString(),
           },
