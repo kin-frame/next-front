@@ -27,12 +27,10 @@ export default function PageContent() {
 
   const { data: urlData, isFetching } = useQuery({
     queryKey: ["files", "presinged-url", id],
-    queryFn: async () =>
-      (
-        await api.get<{ url: string }>("/file/presigned-url", {
-          params: { fileId: id },
-        })
-      ).data,
+    queryFn: () =>
+      api.get<null, { url: string }>("/file/presigned-url", {
+        params: { fileId: id },
+      }),
     enabled: isVideo,
   });
 
