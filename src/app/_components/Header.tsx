@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
@@ -35,10 +36,17 @@ export default function Header() {
       >
         <SideMenuButton />
         <Typography
+          component={Link}
+          href={"/home"}
           fontWeight={700}
           fontSize={24}
           sx={{
             mx: "8px",
+            textDecoration: "none",
+            color: "gray.900",
+            [`&:visited`]: {
+              color: "gray.900",
+            },
           }}
         >
           Kinframes

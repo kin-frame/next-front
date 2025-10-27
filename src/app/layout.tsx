@@ -6,7 +6,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
-import api from "@/shared/api";
+import { userQuery } from "@/services/user/query";
 import { JwtPayload } from "@/shared/config/roles";
 import theme from "@/shared/mui/theme";
 import parseJwt from "@/shared/util/parseJwt";
@@ -56,13 +56,7 @@ async function prefetchData() {
 
   await Promise.all([
     await queryClient.prefetchQuery({
-      queryKey: ["user", "me"],
-      queryFn: () =>
-        api.get<null, { fileType: string }>(`/user/me`, {
-          headers: {
-            cookie: cookieStore.toString(),
-          },
-        }),
+      ...userQuery.getCurrentUserInfo({ cookie: cookieStore.toString() }),
     }),
   ]);
 

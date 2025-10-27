@@ -1,12 +1,30 @@
 "use client";
 import Link from "next/link";
+import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 import { Button, Grid, Stack } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+
+import { userQuery } from "@/services/user/query";
+import theme from "@/shared/mui/theme";
 
 export default function Files() {
+  const { data: userData } = useQuery({
+    ...userQuery.getCurrentUserInfo({}),
+  });
+
+  const isAdmin = userData?.role === "ADMIN";
+
   return (
     <Grid size={12}>
-      <Stack>
+      <Stack
+        sx={{
+          gap: "16px",
+          [theme.breakpoints.down("lg")]: {
+            gap: "8px",
+          },
+        }}
+      >
         <Button
           startIcon={<FolderOutlinedIcon />}
           variant="text"
@@ -16,6 +34,16 @@ export default function Files() {
         >
           내 파일 확인하기
         </Button>
+        {isAdmin && (
+          <Button
+            startIcon={<AdminPanelSettingsOutlinedIcon />}
+            variant="outlined"
+            LinkComponent={Link}
+            href="/admin"
+          >
+            관리자 페이지로 이동
+          </Button>
+        )}
       </Stack>
     </Grid>
   );
