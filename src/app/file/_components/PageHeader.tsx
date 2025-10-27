@@ -1,6 +1,7 @@
 "use client";
 import { Grid, Stack } from "@mui/material";
 
+import FileUploadButton from "@/app/_components/FileUploadButton";
 import CreateDirectoryButton from "./CreateDirectoryButton";
 import ToggleListType from "./ToggleListType";
 
@@ -12,9 +13,10 @@ export default function PageHeader() {
           flexDirection: "row",
           justifyContent: "flex-end",
           alignItems: "center",
-          gap: "8px",
+          gap: "4px",
         }}
       >
+        <FileUploadButton />
         <CreateDirectoryButton />
         <ToggleListType />
       </Stack>
