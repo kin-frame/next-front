@@ -11,16 +11,16 @@ export default function RouterPagination({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
-  const page = Number(searchParams.get("page") || "1");
+  const page = Number(searchParams.get("page")) || 0;
 
   return (
     <Pagination
       disabled={isPending}
-      page={page}
+      page={page + 1}
       count={count}
       onChange={(event, page) => {
         const params = new URLSearchParams(searchParams);
-        params.set("page", `${page}`);
+        params.set("page", `${page - 1}`);
         startTransition(() => {
           router.push(`${pathname}?${params.toString()}`, { scroll: false });
         });

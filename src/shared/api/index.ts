@@ -34,13 +34,13 @@ api.interceptors.response.use(
   (response) => response.data // data만 반환
 );
 
-export interface PagebleReqDto {
+export interface PageableReqDto {
   page: number;
   size: number;
   sort: string[];
 }
 
-export interface PagebleResDto<T> {
+export interface PageableResDto<T> {
   content: T[];
   page: number;
   size: number;
@@ -48,9 +48,14 @@ export interface PagebleResDto<T> {
   totalCount: number;
 }
 
-export interface PageProps {
-  searchParams: Promise<Record<string, string>>;
-  params: Promise<Record<string, string>>;
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type UnwrapApiResponse<T> = T extends (...args: any) => Promise<infer R>
+  ? R
+  : never;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type UnwrapApiRequest<T> = T extends (...args: infer R) => any
+  ? R[0]
+  : never;
 
 export default api;

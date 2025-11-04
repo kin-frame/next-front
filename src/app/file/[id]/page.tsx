@@ -1,8 +1,10 @@
 import PageWrapper from "@/entities/PageWrapper";
-import { PageProps } from "@/shared/api";
 import PageContent from "./_components/PageContent";
 
-export default async function Page({ params, searchParams }: PageProps) {
+export default async function Page({
+  params,
+  searchParams,
+}: PageProps<"/file/[id]">) {
   await params;
   await searchParams;
 

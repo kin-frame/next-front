@@ -3,7 +3,7 @@ import { Grid, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 
-import api, { PagebleResDto } from "@/shared/api";
+import api, { PageableResDto } from "@/shared/api";
 import theme from "@/shared/mui/theme";
 import FilePreview from "./FilePreview";
 
@@ -15,7 +15,7 @@ export default function FileGrid() {
       { page: 0, size: 20, sort: ["lastModified,DESC"] },
     ],
     queryFn: () =>
-      api.get<null, PagebleResDto<{ id: number; fileType: string }>>("file", {
+      api.get<null, PageableResDto<{ id: number; fileType: string }>>("file", {
         params: {
           page: 0,
           size: 20,

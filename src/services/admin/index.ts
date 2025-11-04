@@ -1,13 +1,16 @@
-import api, { PagebleResDto } from "@/shared/api";
+import api, { PageableReqDto, PageableResDto } from "@/shared/api";
 
 function getAdminUserList({
   query,
 }: {
-  query: { page: number; size: number; sort: string[] };
+  query: PageableReqDto & {
+    keywordType: string;
+    keyword: string;
+  };
 }) {
   return api.get<
     null,
-    PagebleResDto<{
+    PageableResDto<{
       createdAt: string;
       email: string;
       fileCount: number;

@@ -171,14 +171,8 @@ export default function RecordTable<T extends Record<string, React.ReactNode>>({
             </TableRow>
           ))}
         {data.length === 0 && !isFetching && (
-          <TableRow sx={{ height: 43 * (size ?? 1) }}>
-            <TableCell
-              colSpan={columns.length}
-              align="center"
-              sx={{
-                height: "200px",
-              }}
-            >
+          <TableRow>
+            <TableCell colSpan={columns.length} align="center">
               {emptyComponent ?? "검색결과가 없습니다."}
             </TableCell>
           </TableRow>

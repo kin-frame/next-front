@@ -7,6 +7,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 import { userQuery } from "@/services/user/query";
+import api from "@/shared/api";
 import { JwtPayload } from "@/shared/config/roles";
 import theme from "@/shared/mui/theme";
 import parseJwt from "@/shared/util/parseJwt";
@@ -22,6 +23,22 @@ export const metadata: Metadata = {
   title: "Kinframes",
   description: "가족과 함께하는 생생한 기억들",
 };
+
+api.interceptors.request.use(async (config) => {
+  if (typeof window === "undefined") {
+    const cookieStore = await cookies();
+    const cookieHeader = cookieStore
+      .getAll()
+      .map((c) => `${c.name}=${c.value}`)
+      .join("; ");
+
+    if (cookieHeader) {
+      config.headers.Cookie = cookieHeader;
+    }
+  }
+
+  return config;
+});
 
 export default async function RootLayout({
   children,

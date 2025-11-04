@@ -1,4 +1,5 @@
 "use client";
+import { useSearchParams } from "next/navigation";
 import { Grid, Stack } from "@mui/material";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
@@ -6,13 +7,17 @@ import RecordTable from "@/entities/RecordTable";
 import RouterPagination from "@/entities/RouterPagination";
 import { adminQuery } from "@/services/admin/query";
 import { formatDate } from "@/shared/util/common";
+import SearchForm from "./SearchForm";
 
 export default function ResultTable() {
+  const searchParams = useSearchParams();
   const { data } = useQuery({
     ...adminQuery.getAdminUserList({
       query: {
-        page: 0,
-        size: 5,
+        keywordType: "email",
+        keyword: searchParams.get("keyword") || "",
+        page: Number(searchParams.get("page")) || 0,
+        size: Number(searchParams.get("size")) || 10,
         sort: ["createdAt,ASC"],
       },
     }),
@@ -21,6 +26,7 @@ export default function ResultTable() {
 
   return (
     <Grid size={12}>
+      <SearchForm />
       <Stack
         sx={{
           overflowX: "auto",
