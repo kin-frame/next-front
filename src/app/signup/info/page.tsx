@@ -1,5 +1,5 @@
 import PageWrapper from "@/entities/PageWrapper";
-import PageContent from "./_components.tsx/PageContent";
+import PageContent from "./_components/PageContent";
 
 export default async function Page() {
   return (
