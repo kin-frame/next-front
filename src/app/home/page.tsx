@@ -1,12 +1,10 @@
 import PageWrapper from "@/entities/PageWrapper";
-import Files from "./_components/Files";
-import UserInfo from "./_components/UserInfo";
+import PageContent from "./_components/PageContent";
 
 export default async function Page() {
   return (
     <PageWrapper>
-      <UserInfo />
-      <Files />
+      <PageContent />
     </PageWrapper>
   );
 }
