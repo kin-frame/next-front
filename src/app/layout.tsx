@@ -17,6 +17,7 @@ import Providers from "./_query/providers";
 
 const pretendardGOV = localFont({
   src: "./_font/PretendardGOVVariable.ttf",
+  preload: true,
 });
 
 export const metadata: Metadata = {

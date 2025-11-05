@@ -1,20 +1,20 @@
 "use client";
 import { useSearchParams } from "next/navigation";
-import { Grid, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
+import MuiLink from "@/entities/MuiLink";
 import RecordTable from "@/entities/RecordTable";
 import RouterPagination from "@/entities/RouterPagination";
 import { adminQuery } from "@/services/admin/query";
 import { formatDate } from "@/shared/util/common";
-import SearchForm from "./SearchForm";
 
 export default function ResultTable() {
   const searchParams = useSearchParams();
   const { data } = useQuery({
     ...adminQuery.getAdminUserList({
       query: {
-        keywordType: "email",
+        keywordType: searchParams.get("keywordType") || "email",
         keyword: searchParams.get("keyword") || "",
         page: Number(searchParams.get("page")) || 0,
         size: Number(searchParams.get("size")) || 10,
@@ -25,8 +25,7 @@ export default function ResultTable() {
   });
 
   return (
-    <Grid size={12}>
-      <SearchForm />
+    <>
       <Stack
         sx={{
           overflowX: "auto",
@@ -42,6 +41,11 @@ export default function ResultTable() {
               key: "email",
               title: "이메일",
               width: "320px",
+              render: (v, r) => (
+                <MuiLink href={`/admin/user/${r.id}`} color="textPrimary">
+                  {v}
+                </MuiLink>
+              ),
             },
             {
               dataIndex: "name",
@@ -114,6 +118,6 @@ export default function ResultTable() {
       >
         <RouterPagination count={data?.totalPages} />
       </Stack>
-    </Grid>
+    </>
   );
 }
