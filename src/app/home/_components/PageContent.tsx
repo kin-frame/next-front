@@ -1,8 +1,9 @@
 "use client";
 import Link from "next/link";
+import { ReactNode } from "react";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
-import { Button, Grid, Stack } from "@mui/material";
+import { Grid, Paper, Stack, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 
 import { userQuery } from "@/services/user/query";
@@ -19,36 +20,83 @@ export default function PageContent() {
   return (
     <>
       <UserInfo />
+
       <Grid size={12}>
+        <Typography fontWeight={700} fontSize={18}>
+          바로가기
+        </Typography>
         <Stack
           sx={{
+            mt: "4px",
             gap: "16px",
-            [theme.breakpoints.down("lg")]: {
-              gap: "8px",
-            },
           }}
         >
-          <Button
-            startIcon={<FolderOutlinedIcon />}
-            variant="outlined"
-            color="inherit"
-            LinkComponent={Link}
+          <QuickLink
             href="/file"
-          >
-            내 파일 확인하기
-          </Button>
+            icon={<FolderOutlinedIcon sx={{ fontSize: 28 }} />}
+            title="내 파일"
+            description="업로드한 파일을 확인하고 관리해요"
+          />
+
           {isAdmin && (
-            <Button
-              startIcon={<AdminPanelSettingsOutlinedIcon />}
-              variant="outlined"
-              LinkComponent={Link}
+            <QuickLink
               href="/admin"
-            >
-              관리자 페이지로 이동
-            </Button>
+              icon={<AdminPanelSettingsOutlinedIcon sx={{ fontSize: 28 }} />}
+              title="관리자 페이지"
+              description="사용자와 디렉토리를 관리해요"
+            />
           )}
         </Stack>
       </Grid>
     </>
+  );
+}
+
+type QuickLinkProps = {
+  href: string;
+  icon: ReactNode;
+  title: string;
+  description?: string;
+};
+
+function QuickLink({ href, icon, title, description }: QuickLinkProps) {
+  return (
+    <Grid
+      size={{
+        xs: 4,
+        sm: 4,
+        md: 4,
+        lg: 6,
+        xl: 6,
+      }}
+    >
+      <Paper
+        elevation={2}
+        component={Link}
+        href={href}
+        aria-label={title}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: "12px",
+          textDecoration: "none",
+          p: "16px",
+          [theme.breakpoints.down("lg")]: { p: "12px" },
+          transition: "box-shadow .2s ease, transform .1s ease",
+          "&:hover": { boxShadow: 4 },
+          "&:active": { transform: "translateY(1px)" },
+        }}
+      >
+        {icon}
+        <Stack sx={{ gap: "2px" }}>
+          <Typography fontWeight={600}>{title}</Typography>
+          {description && (
+            <Typography variant="body2" color="text.secondary">
+              {description}
+            </Typography>
+          )}
+        </Stack>
+      </Paper>
+    </Grid>
   );
 }
