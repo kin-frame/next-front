@@ -1,5 +1,6 @@
 "use client";
 import { useParams } from "next/navigation";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {
   Alert,
@@ -16,21 +17,24 @@ import {
 } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+import MuiLink from "@/entities/MuiLink";
 import { adminMutation, adminQuery } from "@/services/admin/query";
 import { UnwrapApiRequest } from "@/shared/api";
+import { formatDate } from "@/shared/util/common";
 
 export default function PageContent() {
   const params = useParams<{ id: string }>();
   const id = Number(params.id);
   const queryClient = useQueryClient();
 
-  const { data, isPending, isError } = useQuery({
+  const { data, isPending, isFetching, isError } = useQuery({
     ...adminQuery.getAdminUserInfo({ path: { id } }),
   });
 
   const {
     handleSubmit,
     register,
+    reset,
     formState: { isDirty },
   } = useForm<
     UnwrapApiRequest<
@@ -41,6 +45,7 @@ export default function PageContent() {
       fileCount: data?.fileCount,
       maxFileSize: data?.maxFileSize,
     },
+    mode: "onChange",
   });
 
   const { mutate, isPending: isSaving } = useMutation({
@@ -51,6 +56,10 @@ export default function PageContent() {
       });
     },
   });
+
+  useEffect(() => {
+    reset({ fileCount: data?.fileCount, maxFileSize: data?.maxFileSize });
+  }, [data?.fileCount, data?.maxFileSize, reset]);
 
   if (isPending) {
     return (
@@ -68,7 +77,7 @@ export default function PageContent() {
     return <Alert severity="error">사용자 정보를 불러오지 못했습니다.</Alert>;
   }
 
-  const saveDisabled = isSaving || !isDirty;
+  const saveDisabled = isSaving || !isDirty || isFetching;
 
   return (
     <Stack gap={2}>
@@ -82,12 +91,15 @@ export default function PageContent() {
               <Chip label={`권한: ${data.role}`} size="small" />
             </Stack>
             <Divider />
-            <Typography variant="body2">가입일: {data.createdAt}</Typography>
             <Typography variant="body2">
-              최근 로그인: {data.lastLoginedAt}
+              가입일: {formatDate(data.createdAt)}
             </Typography>
             <Typography variant="body2">
-              최근 IP: {data.lastLoginedIp}
+              최근 로그인:{" "}
+              {formatDate(data.lastLoginedAt, "YYYY.MM.DD HH:mm:ss")}
+            </Typography>
+            <Typography variant="body2">
+              최근 접속 IP: {data.lastLoginedIp}
             </Typography>
           </Stack>
         </CardContent>
@@ -149,6 +161,21 @@ export default function PageContent() {
           </Button>
         </CardActions>
       </Card>
+      <Stack
+        sx={{
+          flexDirection: "row",
+        }}
+      >
+        <Button
+          component={MuiLink}
+          href={`/admin/user`}
+          load
+          variant="outlined"
+          size="small"
+        >
+          목록으로
+        </Button>
+      </Stack>
     </Stack>
   );
 }

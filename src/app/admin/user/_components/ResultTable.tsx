@@ -42,7 +42,7 @@ export default function ResultTable() {
               title: "이메일",
               width: "320px",
               render: (v, r) => (
-                <MuiLink href={`/admin/user/${r.id}`} color="textPrimary">
+                <MuiLink href={`/admin/user/${r.id}`} color="textPrimary" save>
                   {v}
                 </MuiLink>
               ),

@@ -4,6 +4,7 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { getQueryClient } from "@/app/_query/get-query-client";
 import PageWrapper from "@/entities/PageWrapper";
 import { adminQuery } from "@/services/admin/query";
+import PageFooter from "./_components/PageFooter";
 import ResultTable from "./_components/ResultTable";
 import SearchForm from "./_components/SearchForm";
 
@@ -33,6 +34,7 @@ export default async function Page({
         <Grid size={12}>
           <SearchForm />
           <ResultTable />
+          <PageFooter />
         </Grid>
       </HydrationBoundary>
     </PageWrapper>
