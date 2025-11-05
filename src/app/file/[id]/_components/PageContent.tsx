@@ -7,30 +7,21 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import { Button, Grid, Skeleton, Stack, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 
-import api from "@/shared/api";
+import { fileQuery } from "@/services/file/query";
 
 export default function PageContent() {
   const params = useParams<{ id: string }>();
   const id = Number(params.id);
 
   const { data } = useQuery({
-    queryKey: ["files", id],
-    queryFn: () =>
-      api.get<null, { fileType: string; width: number; height: number }>(
-        `/file/${id}`,
-        {}
-      ),
+    ...fileQuery.getFileInfo({ path: { id } }),
   });
 
   const isImage = data?.fileType.includes("image");
   const isVideo = data?.fileType.includes("video");
 
   const { data: urlData, isFetching } = useQuery({
-    queryKey: ["files", "presinged-url", id],
-    queryFn: () =>
-      api.get<null, { url: string }>("/file/presigned-url", {
-        params: { fileId: id },
-      }),
+    ...fileQuery.getPresignedUrl({ query: { fileId: id } }),
     enabled: isVideo,
   });
 
@@ -103,20 +94,11 @@ function FileImage() {
   const [loaded, setLoaded] = useState(false);
 
   const { data } = useQuery({
-    queryKey: ["files", id],
-    queryFn: () =>
-      api.get<null, { fileType: string; width: number; height: number }>(
-        `/file/${id}`,
-        {}
-      ),
+    ...fileQuery.getFileInfo({ path: { id } }),
   });
 
   const { data: urlData } = useQuery({
-    queryKey: ["files", "presinged-url", id],
-    queryFn: () =>
-      api.get<null, { url: string }>("/file/presigned-url", {
-        params: { fileId: id },
-      }),
+    ...fileQuery.getPresignedUrl({ query: { fileId: id } }),
   });
 
   if (!urlData) {
