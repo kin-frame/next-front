@@ -22,6 +22,7 @@ import MuiSelect from "@/entities/MuiSelect";
 import { adminMutation, adminQuery } from "@/services/admin/query";
 import { UnwrapApiRequest } from "@/shared/api";
 import { formatDate } from "@/shared/util/common";
+import { registerNumberMask } from "@/shared/util/form";
 
 export default function PageContent() {
   const params = useParams<{ id: string }>();
@@ -185,13 +186,13 @@ function UserFileCard() {
           <TextField
             {...register("maxFileSize", {
               required: true,
-              valueAsNumber: true,
+              ...registerNumberMask,
             })}
             label="최대 파일 크기(바이트)"
-            type="number"
             size="small"
             slotProps={{
               htmlInput: {
+                inputMode: "numeric",
                 min: 0,
               },
             }}
@@ -262,6 +263,7 @@ function UserRoleCard() {
       })}
     >
       <CardContent>
+        <Typography sx={{ mb: 1 }}>사용자 권한 제어</Typography>
         <Controller
           control={control}
           name="role"
