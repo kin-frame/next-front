@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ReactNode } from "react";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
+import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
 import { Grid, Paper, Stack, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 
@@ -33,15 +34,22 @@ export default function PageContent() {
         >
           <QuickLink
             href="/file"
-            icon={<FolderOutlinedIcon sx={{ fontSize: 28 }} />}
+            icon={<FolderOutlinedIcon sx={{ fontSize: 24 }} />}
             title="내 파일"
             description="업로드한 파일을 확인하고 관리해요"
+          />
+
+          <QuickLink
+            href="/chat"
+            icon={<TextsmsOutlinedIcon sx={{ fontSize: 24 }} />}
+            title="채팅(개발중)"
+            description="다른 사용자와 대화할 수 있어요"
           />
 
           {isAdmin && (
             <QuickLink
               href="/admin"
-              icon={<AdminPanelSettingsOutlinedIcon sx={{ fontSize: 28 }} />}
+              icon={<AdminPanelSettingsOutlinedIcon sx={{ fontSize: 24 }} />}
               title="관리자 페이지"
               description="사용자와 디렉토리를 관리해요"
             />

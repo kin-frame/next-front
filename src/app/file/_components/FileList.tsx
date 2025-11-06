@@ -109,11 +109,19 @@ export default function FileList() {
                   router.push(`/file?directoryId=${v.id}`);
                 }}
               >
-                <ListItemAvatar sx={{ minWidth: "48px", height: "48px" }}>
+                <ListItemAvatar
+                  sx={{
+                    minWidth: "48px",
+                    height: "48px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
                   <FolderOutlinedIcon
                     sx={{
                       m: "6px",
-                      fontSize: 36,
+                      fontSize: 24,
                       lineHeight: 1,
                     }}
                   />
