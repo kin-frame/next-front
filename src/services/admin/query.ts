@@ -15,6 +15,9 @@ const mutation: TMutationMap<typeof adminApi> = {
   updateUserFileLimit: {
     mutationFn: adminApi.updateUserFileLimit,
   },
+  updateUserRole: {
+    mutationFn: adminApi.updateUserRole,
+  },
 };
 
 export const adminQuery = query;

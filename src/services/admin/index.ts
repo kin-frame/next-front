@@ -62,8 +62,24 @@ type User = {
   sessionId: null;
 };
 
+type UpdateUserRoleReqDto = {
+  /** 사용자 권한 ADMIN | USER | GUEST */
+  role: string;
+};
+
 export const adminApi = {
   getAdminUserList,
   getAdminUserInfo,
   updateUserFileLimit,
+  updateUserRole({
+    path,
+    body,
+  }: {
+    path: {
+      id: number;
+    };
+    body: UpdateUserRoleReqDto;
+  }) {
+    return api.patch<null, User>(`/admin/user/${path.id}/role`, body);
+  },
 };
