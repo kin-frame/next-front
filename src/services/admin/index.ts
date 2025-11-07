@@ -82,4 +82,22 @@ export const adminApi = {
   }) {
     return api.patch<null, User>(`/admin/user/${path.id}/role`, body);
   },
+  updateUserApproved({
+    path,
+  }: {
+    path: {
+      id: number;
+    };
+  }) {
+    return api.patch<null, User>(`/admin/user/${path.id}/approve`);
+  },
+  updateUserRejected({
+    path,
+  }: {
+    path: {
+      id: number;
+    };
+  }) {
+    return api.patch<null, User>(`/admin/user/${path.id}/reject`);
+  },
 };

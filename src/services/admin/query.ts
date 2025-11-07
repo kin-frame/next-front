@@ -18,6 +18,12 @@ const mutation: TMutationMap<typeof adminApi> = {
   updateUserRole: {
     mutationFn: adminApi.updateUserRole,
   },
+  updateUserApproved: {
+    mutationFn: adminApi.updateUserApproved,
+  },
+  updateUserRejected: {
+    mutationFn: adminApi.updateUserRejected,
+  },
 };
 
 export const adminQuery = query;

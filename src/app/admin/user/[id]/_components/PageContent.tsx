@@ -58,6 +58,7 @@ export default function PageContent() {
         <UserInfoCard />
         <UserFileCard />
         <UserRoleCard />
+        <UserStatusCard />
 
         <Stack
           sx={{
@@ -348,6 +349,107 @@ function UserRoleCard() {
           disabled={saveDisabled}
         >
           {isSaving ? "저장 중..." : "저장"}
+        </Button>
+      </CardActions>
+    </Card>
+  );
+}
+
+function UserStatusCard() {
+  const params = useParams<{ id: string }>();
+  const id = Number(params.id);
+  const queryClient = useQueryClient();
+
+  const { data, isFetching } = useQuery({
+    ...adminQuery.getAdminUserInfo({ path: { id } }),
+  });
+
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { isDirty },
+  } = useForm<{ status: string }>({
+    defaultValues: {
+      status: data?.status,
+    },
+  });
+
+  const { mutate: mutateApprove, isPending: isPendingApprove } = useMutation({
+    ...adminMutation.updateUserApproved,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: adminQuery.getAdminUserInfo({ path: { id } }).queryKey,
+      });
+    },
+  });
+
+  const { mutate: mutateReject, isPending: isPendingReject } = useMutation({
+    ...adminMutation.updateUserRejected,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: adminQuery.getAdminUserInfo({ path: { id } }).queryKey,
+      });
+    },
+  });
+
+  useEffect(() => {
+    reset({ status: data?.status });
+  }, [data?.status, reset]);
+
+  const saveDisabled =
+    isPendingApprove || isPendingReject || !isDirty || isFetching;
+
+  return (
+    <Card
+      component="form"
+      onSubmit={handleSubmit((data) => {
+        if (data.status === "APPROVED") {
+          mutateApprove({
+            path: { id },
+          });
+        } else if (data.status === "REJECTED") {
+          mutateReject({
+            path: { id },
+          });
+        }
+      })}
+    >
+      <CardContent>
+        <Typography sx={{ mb: 1 }}>사용자 상태 제어</Typography>
+        <Typography sx={{ fontSize: 15, color: "gray.700", ml: "8px" }}>
+          가입 메시지: {data?.message || "-"}
+        </Typography>
+        <Controller
+          control={control}
+          name="status"
+          render={({ field }) => (
+            <MuiSelect
+              {...field}
+              label="상태"
+              size="small"
+              sx={{ width: "200px" }}
+            >
+              <option value="PENDING" disabled>
+                제출전
+              </option>
+              <option value="SUBMIT" disabled>
+                제출
+              </option>
+              <option value="APPROVED">승인</option>
+              <option value="REJECTED">거절</option>
+            </MuiSelect>
+          )}
+        />
+      </CardContent>
+      <CardActions sx={{ justifyContent: "flex-end" }}>
+        <Button
+          type="submit"
+          variant="contained"
+          size="small"
+          disabled={saveDisabled}
+        >
+          {isPendingApprove || isPendingReject ? "저장 중..." : "저장"}
         </Button>
       </CardActions>
     </Card>
