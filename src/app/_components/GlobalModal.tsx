@@ -83,6 +83,7 @@ export default function GlobalModal({
           <Button
             size="xsmall"
             type={modalInfo.form ? "submit" : "button"}
+            color={modalInfo.confirmColor}
             onClick={modalInfo.onConfirm}
             loading={modalInfo.isLoading}
           >

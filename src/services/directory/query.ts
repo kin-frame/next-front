@@ -20,6 +20,9 @@ const mutation: TMutationMap<typeof directoryApi> = {
   createDirectory: {
     mutationFn: directoryApi.createDirectory,
   },
+  deleteDirectory: {
+    mutationFn: directoryApi.deleteDirectory,
+  },
 };
 
 export const directoryQuery = query;

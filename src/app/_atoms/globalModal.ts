@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { ButtonProps } from "@mui/material";
 import { atom, useSetAtom } from "jotai";
 
 export const globalModalAtom = atom<ModalAtomType>({
@@ -29,6 +30,7 @@ type ModalInfo = {
   isConfirm?: boolean;
   onConfirm?: () => void;
   confirmTitle?: string;
+  confirmColor?: ButtonProps["color"];
 
   cancelTitle?: string;
 

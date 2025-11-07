@@ -3,6 +3,7 @@ import { Grid, Stack } from "@mui/material";
 
 import FileUploadButton from "@/app/_components/FileUploadButton";
 import CreateDirectoryButton from "./CreateDirectoryButton";
+import DeleteDirectoryButton from "./DeleteDirectoryButton";
 import ToggleListType from "./ToggleListType";
 
 export default function PageHeader() {
@@ -17,6 +18,7 @@ export default function PageHeader() {
         }}
       >
         <FileUploadButton />
+        <DeleteDirectoryButton />
         <CreateDirectoryButton />
         <ToggleListType />
       </Stack>

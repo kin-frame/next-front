@@ -67,6 +67,7 @@ export default function CreateDirectoryButton() {
     <IconButton
       aria-label="디렉토리 추가"
       sx={{ flex: "0 0 auto" }}
+      color="primary"
       onClick={() => {
         open({
           title: "폴더 생성하기",

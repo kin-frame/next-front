@@ -51,9 +51,17 @@ function createDirectory(params: { a: number; b: string }) {
   return api.post("", params);
 }
 
+type DeleteDirectoryDto = {
+  /** 삭제할 디렉토리 ID */
+  id: number;
+};
+
 export const directoryApi = {
   getDirectoryChildren,
   getRootDirectory,
   getDirectoryInfo,
   createDirectory,
+  deleteDirectory({ body }: { body: DeleteDirectoryDto }) {
+    return api.post<null, { deletedCount: number }>("directory/delete", body);
+  },
 };

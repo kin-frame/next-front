@@ -144,9 +144,11 @@ export default function FileUploadButton() {
       queryClient.invalidateQueries({
         queryKey: ["files", "list"],
       });
-      queryClient.invalidateQueries(
-        directoryQuery.getDirectoryChildren({ query: { directoryId } })
-      );
+      queryClient.invalidateQueries({
+        queryKey: directoryQuery.getDirectoryChildren({
+          query: { directoryId },
+        }).queryKey,
+      });
     },
   });
 

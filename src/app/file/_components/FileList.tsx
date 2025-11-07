@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 import {
   Grid,
@@ -12,11 +12,7 @@ import {
   listItemTextClasses,
   Typography,
 } from "@mui/material";
-import {
-  keepPreviousData,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 
 import { directoryQuery } from "@/services/directory/query";
@@ -25,8 +21,6 @@ import FileListPreview from "./FileListPreview";
 
 export default function FileList() {
   const searchParams = useSearchParams();
-  const router = useRouter();
-  const queryClient = useQueryClient();
 
   const { data: rootData } = useQuery({
     ...directoryQuery.getRootDirectory(),
@@ -99,15 +93,6 @@ export default function FileList() {
                 }}
                 LinkComponent={Link}
                 href={`/file?directoryId=${v.id}`}
-                onClick={async (event) => {
-                  event.preventDefault();
-                  await queryClient.prefetchQuery({
-                    ...directoryQuery.getDirectoryChildren({
-                      query: { directoryId: v.id },
-                    }),
-                  });
-                  router.push(`/file?directoryId=${v.id}`);
-                }}
               >
                 <ListItemAvatar
                   sx={{
