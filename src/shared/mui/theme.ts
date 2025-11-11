@@ -64,6 +64,8 @@ const theme = createTheme({
       900: "#1e2124",
     },
     error: {
+      light: "#fdefec",
+      dark: "#bd2c0f",
       main: "#de3412",
       50: "#fdefec",
       100: "#fcdfd9",
@@ -91,6 +93,8 @@ const theme = createTheme({
       900: "#2e1f00",
     },
     success: {
+      light: "#d8eedd",
+      dark: "#285d33",
       main: "#228738",
       50: "#eaf6ec",
       100: "#d8eedd",

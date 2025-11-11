@@ -3,7 +3,8 @@ import Link, { LinkProps } from "next/link";
 import { PropsWithChildren } from "react";
 import FolderOpenOutlinedIcon from "@mui/icons-material/FolderOpenOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import { Grid, Paper, Typography } from "@mui/material";
+import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
+import { Grid, Paper, PaperProps, Typography } from "@mui/material";
 
 import theme from "@/shared/mui/theme";
 
@@ -21,11 +22,25 @@ export default function PageContent() {
         <FolderOpenOutlinedIcon />
         <Typography>디렉토리 및 파일 정보</Typography>
       </LinkItem>
+      <LinkItem
+        href="/admin/health"
+        sx={{
+          bgcolor: theme.palette.error.light,
+          color: theme.palette.error.dark,
+        }}
+      >
+        <SecurityOutlinedIcon />
+        <Typography>헬스체크</Typography>
+      </LinkItem>
     </>
   );
 }
 
-function LinkItem({ href, children }: PropsWithChildren<LinkProps>) {
+function LinkItem({
+  href,
+  children,
+  sx,
+}: PropsWithChildren<LinkProps & PaperProps>) {
   return (
     <Grid
       size={{
@@ -51,6 +66,8 @@ function LinkItem({ href, children }: PropsWithChildren<LinkProps>) {
           [theme.breakpoints.down("lg")]: {
             p: "16px",
           },
+
+          ...sx,
         }}
       >
         {children}
